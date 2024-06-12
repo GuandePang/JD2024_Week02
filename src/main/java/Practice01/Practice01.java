@@ -2,10 +2,10 @@ package Practice01;
 
 public class Practice01 {
     @NotNull(message = "UserName cannot be Empty!")
-    @MaxLength(maxLength = 16, message = "UserName must be shorter than 16bit!")
+    @MaxLength(maxLength = 16, message = "UserName must be shorter than 16 characters!")
     private String username;
     @NotNull(message = "Password cannot be Empty!")
-    @MaxLength(maxLength = 32, message = "Password must be shorter than 32bit!")
+    @MaxLength(maxLength = 32, message = "Password must be shorter than 32 characters!")
     @Password(message = "Password is Illegal!")
     private String password;
 

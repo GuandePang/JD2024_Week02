@@ -4,14 +4,15 @@ import java.lang.reflect.Field;
 
 public class Validator {
     public static void validate(Object object) throws IllegalAccessException{
-        Field[] fields = object.getClass().getFields();
+        //获取所有字段，包括私有字段
+        Field[] fields = object.getClass().getDeclaredFields();
         for(Field field: fields){
             if(field.isAnnotationPresent(NotNull.class)){
                 field.setAccessible(true);
                 Object value = field.get(object);
                 if(value == null || ((String)value).isEmpty()){
                     NotNull annotation = field.getAnnotation(NotNull.class);
-                    throw new IllegalAccessException(annotation.message());
+                    throw new IllegalArgumentException(annotation.message());
                 }
             }
 
@@ -20,7 +21,7 @@ public class Validator {
                 Object value = field.get(object);
                 MaxLength annotation = field.getAnnotation(MaxLength.class);
                 if(value != null && ((String)value).length() > annotation.maxLength()){
-                    throw new IllegalAccessException(annotation.message());
+                    throw new IllegalArgumentException(annotation.message());
                 }
             }
 
@@ -30,14 +31,9 @@ public class Validator {
                 Password annotation = field.getAnnotation(Password.class);
                 String passwordPattern = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{1,}$";
                 if(value != null && !((String)value).matches(passwordPattern)){
-                    throw new IllegalAccessException(annotation.message());
+                    throw new IllegalArgumentException(annotation.message());
                 }
             }
         }
-    }
-
-    public static void main(String[] args) throws IllegalAccessException{
-        Practice01 practice01 = new Practice01("Guande Pang", "Guande2001!@#");
-        validate(practice01);
     }
 }
